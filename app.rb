@@ -34,7 +34,7 @@ class App < Sinatra::Application
   end
 
   get '/play' do
-    @board = session[:board].spaces
+    render_board
     erb '/board'.to_sym
   end
 
@@ -59,8 +59,7 @@ class App < Sinatra::Application
     redirect '/'
   end
 
-  private
-
+private
   def create_game
     session[:game] = WebGameStore.new_game(params)
   end
@@ -75,6 +74,10 @@ class App < Sinatra::Application
 
   def create_current_player
     session[:game_rules].current_player = session[:game].player_one_piece
+  end
+
+  def render_board
+    @board = session[:board].spaces
   end
 
   def make(move)
