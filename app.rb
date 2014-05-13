@@ -35,6 +35,7 @@ class App < Sinatra::Application
 
   get '/play' do
     render_board
+    
     erb '/board'.to_sym
   end
 
