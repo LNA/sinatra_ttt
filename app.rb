@@ -42,7 +42,7 @@ class App < Sinatra::Application
     move = fetch_square
     make(move)
     check_for_winner
-    session[:game].current_player = session[:game].next_player
+    next_player
     render_board
 
     erb '/board'.to_sym
@@ -90,5 +90,9 @@ private
 
   def check_for_winner
     redirect '/winner' if session[:game_rules].game_over?(session[:board].spaces)
+  end
+
+  def next_player
+    session[:game].current_player = session[:game].next_player
   end
 end
