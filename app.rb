@@ -6,11 +6,8 @@ require 'ai'
 require 'board'
 require 'game_rules'
 require 'game'
-# require 'repository'
 require 'web_game'
 require 'web_game_store'
-
-# Repository.register(:game, WebGameStore)
 
 configure do
   enable :sessions
