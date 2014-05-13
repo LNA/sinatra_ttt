@@ -43,7 +43,7 @@ class App < Sinatra::Application
     make(move)
     check_for_winner
     session[:game].current_player = session[:game].next_player
-    @board = session[:board].spaces
+    render_board
 
     erb '/board'.to_sym
   end
