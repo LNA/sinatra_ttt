@@ -39,7 +39,7 @@ class App < Sinatra::Application
   end
 
   post '/move' do
-    move = params.fetch("square")
+    move = fetch_square
     make(move)
     check_for_winner
     session[:game].current_player = session[:game].next_player
@@ -78,6 +78,10 @@ private
 
   def render_board
     @board = session[:board].spaces
+  end
+
+  def fetch_square
+    params.fetch("square")
   end
 
   def make(move)
