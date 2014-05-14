@@ -35,6 +35,6 @@ class WebGameStore
   end
 
   def self.ai 
-    @ai = AI.new
+    @ai = AI.new(@game_rules)
   end
 end

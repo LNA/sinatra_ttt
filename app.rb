@@ -73,7 +73,7 @@ private
   end
 
   def make_ai_move
-    session[:board].fill(session[:ai].find_best_move(session[:board].spaces, session[:game].current_player_piece, session[:game].next_player_piece), session[:game].current_player_piece)
+    session[:board].fill(session[:ai].find_best_move(session[:board], session[:game].current_player_piece, session[:game].next_player_piece), session[:game].current_player_piece)
   end
 
   def create_game
