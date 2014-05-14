@@ -29,6 +29,7 @@ class App < Sinatra::Application
     create_game_rules 
     create_board
     create_current_player
+    create_ai
 
     redirect to('/play')
   end
@@ -40,10 +41,10 @@ class App < Sinatra::Application
   end
 
   post '/move' do
-    move = fetch_square
-    make(move)
+    make_move
     check_for_winner
     next_player
+    next_player_type
     render_board
 
     erb '/board'.to_sym
@@ -61,6 +62,20 @@ class App < Sinatra::Application
   end
 
 private
+  def make_move
+    make_human_move if session[:game].current_player_type == "Human"
+    make_ai_move    if session[:game].current_player_type == "AI"
+  end
+
+  def make_human_move
+    move = fetch_square
+    session[:board].fill(move.to_i, session[:game].current_player_piece)
+  end
+
+  def make_ai_move
+    session[:board].fill(session[:ai].find_best_move(session[:board].spaces, session[:game].current_player_piece, session[:game].next_player_piece), session[:game].current_player_piece)
+  end
+
   def create_game
     session[:game] = WebGameStore.new_game(params)
   end
@@ -77,6 +92,10 @@ private
     session[:game_rules].current_player = session[:game].player_one_piece
   end
 
+  def create_ai
+    session[:ai] = WebGameStore.ai
+  end
+
   def render_board
     @board = session[:board].spaces
   end
@@ -85,15 +104,15 @@ private
     params.fetch("square")
   end
 
-  def make(move)
-    session[:board].fill(move.to_i, session[:game].current_player)
-  end
-
   def check_for_winner
     redirect '/winner' if session[:game_rules].game_over?(session[:board].spaces)
   end
 
   def next_player
-    session[:game].current_player = session[:game].next_player
+    session[:game].current_player_piece = session[:game].next_player_piece
+  end
+
+  def next_player_type
+    session[:game].current_player_type = session[:game].next_player_type
   end
 end

@@ -33,4 +33,8 @@ class WebGameStore
   def self.board
     @board = Board.new 
   end
+
+  def self.ai 
+    @ai = AI.new
+  end
 end
