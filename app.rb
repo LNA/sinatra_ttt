@@ -25,11 +25,11 @@ class App < Sinatra::Application
   end
 
   post '/new_game' do
-    create_game 
+    create_game # Game interactor class GameInteractor.setup_new_game
     create_game_rules 
     create_board
     create_current_player
-    create_ai
+    create_ai_if_needed
 
     redirect to('/play')
   end
@@ -41,7 +41,7 @@ class App < Sinatra::Application
   end
 
   post '/move' do
-    make_move
+    make_move # web game interactor
     check_for_winner
     next_player
     next_player_type
@@ -61,7 +61,6 @@ class App < Sinatra::Application
     redirect '/'
   end
 
-private
   def make_move
     make_human_move if session[:game].current_player_type == "Human"
     make_ai_move    if session[:game].current_player_type == "AI"
@@ -92,8 +91,10 @@ private
     session[:game_rules].current_player = session[:game].player_one_piece
   end
 
-  def create_ai
-    session[:ai] = WebGameStore.ai
+  def create_ai_if_needed
+    if session[:game].player_one_type == "AI" || session[:game].player_two_type == "AI"
+      session[:ai] = WebGameStore.ai
+    end
   end
 
   def render_board
