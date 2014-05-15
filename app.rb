@@ -102,9 +102,7 @@ class App < Sinatra::Application
   end
 
   def create_ai_if_needed
-    if session[:game].player_one_type == "AI" || session[:game].player_two_type == "AI"
-      session[:ai] = WebGameStore.ai
-    end
+    session[:ai] = WebGameStore.ai if either_player_is_the_ai?
   end
 
   def render_board
