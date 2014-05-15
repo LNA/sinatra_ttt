@@ -36,19 +36,24 @@ class App < Sinatra::Application
 
   get '/play' do
     render_board
+    #ai should be here if ai versus ai game
     
     erb '/board'.to_sym
   end
 
-  post '/move' do
-    make_move # web game interactor
+  post '/move' do # web game interactor
+    make_human_move if session[:game].current_player_type == "Human"
     check_for_winner
     next_player
     next_player_type
+    make_ai_move if session[:game].current_player_type == "AI"
     render_board
+    check_for_winner
+    next_player
+    next_player_type
 
     erb '/board'.to_sym
-  end
+  end 
 
   get '/winner' do
     erb '/game_over'.to_sym
@@ -72,7 +77,8 @@ class App < Sinatra::Application
   end
 
   def make_ai_move
-    session[:board].fill(session[:ai].find_best_move(session[:board], session[:game].current_player_piece, session[:game].next_player_piece), session[:game].current_player_piece)
+    best_move = session[:ai].find_best_move(session[:board], session[:game].current_player_piece, session[:game].next_player_piece)
+    session[:board].fill(best_move, session[:game].current_player_piece)
   end
 
   def create_game
