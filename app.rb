@@ -35,9 +35,7 @@ class App < Sinatra::Application
   end
 
   get '/play' do
-    if either_player_is_the_ai? 
-      ai_turn
-    end
+    ai_turn if either_player_is_the_ai? 
     render_board
     
     erb '/board'.to_sym
