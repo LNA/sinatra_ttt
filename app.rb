@@ -42,14 +42,12 @@ class App < Sinatra::Application
   end
 
   post '/move' do #web game interactor
-    make_human_move if session[:game].current_player_type == "Human"
-    check_for_winner
-    next_player
-    next_player_type
+    make_human_move 
+    progress_game
     ai_turn
     render_board
 
-  erb '/board'.to_sym
+    erb '/board'.to_sym
   end
 
   get '/winner' do
@@ -66,20 +64,18 @@ class App < Sinatra::Application
   def ai_turn
     if session[:game].current_player_type == "AI"
       make_ai_move
-      check_for_winner
-      next_player
-      next_player_type
+      progress_game
     end
   end
 
-  def make_move
-    make_human_move if session[:game].current_player_type == "Human"
-    make_ai_move    if session[:game].current_player_type == "AI"
+  def progress_game
+    check_for_winner
+    next_player
+    next_player_type
   end
 
   def make_human_move
-    move = fetch_square
-    session[:board].fill(move.to_i, session[:game].current_player_piece)
+    session[:board].fill(fetch_square.to_i, session[:game].current_player_piece) if session[:game].current_player_type == "Human"
   end
 
   def make_ai_move
