@@ -62,10 +62,8 @@ class App < Sinatra::Application
   end
 
   def ai_turn
-    if session[:game].current_player_type == "AI"
-      make_ai_move
-      progress_game
-    end
+    make_ai_move  if session[:game].current_player_type == "AI"
+    progress_game if session[:game].current_player_type == "AI"
   end
 
   def progress_game
@@ -75,7 +73,7 @@ class App < Sinatra::Application
   end
 
   def make_human_move
-    session[:board].fill(fetch_square.to_i, session[:game].current_player_piece) if session[:game].current_player_type == "Human"
+    session[:board].fill(fetch_square.to_i, session[:game].current_player_piece) 
   end
 
   def make_ai_move
