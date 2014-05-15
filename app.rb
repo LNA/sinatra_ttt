@@ -35,6 +35,7 @@ class App < Sinatra::Application
   end
 
   get '/play' do
+    ai_loop if neither_players_are_human?
     ai_turn if either_player_is_the_ai? 
     render_board
     
@@ -63,6 +64,17 @@ class App < Sinatra::Application
 
   def either_player_is_the_ai?
     session[:game].player_one_type == "AI" || session[:game].player_two_type == "AI"
+  end
+
+  def neither_players_are_human?
+    session[:game].player_one_type == "AI" && session[:game].player_two_type == "AI"
+  end
+
+  def ai_loop
+    until session[:game_rules].game_over?(session[:board].spaces)
+      ai_turn
+      render_board
+    end
   end
 
   def ai_turn
