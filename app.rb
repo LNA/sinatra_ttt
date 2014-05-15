@@ -35,25 +35,22 @@ class App < Sinatra::Application
   end
 
   get '/play' do
+    ai_turn
     render_board
-    #ai should be here if ai versus ai game
     
     erb '/board'.to_sym
   end
 
-  post '/move' do # web game interactor
+  post '/move' do #web game interactor
     make_human_move if session[:game].current_player_type == "Human"
     check_for_winner
     next_player
     next_player_type
-    make_ai_move if session[:game].current_player_type == "AI"
+    ai_turn
     render_board
-    check_for_winner
-    next_player
-    next_player_type
 
-    erb '/board'.to_sym
-  end 
+  erb '/board'.to_sym
+  end
 
   get '/winner' do
     erb '/game_over'.to_sym
@@ -64,6 +61,15 @@ class App < Sinatra::Application
     erb '/welcome'.to_sym
 
     redirect '/'
+  end
+
+  def ai_turn
+    if session[:game].current_player_type == "AI"
+      make_ai_move
+      check_for_winner
+      next_player
+      next_player_type
+    end
   end
 
   def make_move
