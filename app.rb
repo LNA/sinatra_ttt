@@ -31,7 +31,7 @@ class App < Sinatra::Application
     create_current_player
     create_ai_if_needed
 
-    redirect to('/test_board.js')
+    redirect to('/play')
   end
 
   get '/test_board.js' do
@@ -42,16 +42,28 @@ class App < Sinatra::Application
     ai_loop if neither_players_are_human? # need to see board
     ai_turn if either_player_is_the_ai?
     render_board
-    '/test_board.js'.to_sym
+    erb '/board'.to_sym
   end
 
   post '/move' do #web game interactor
     make_human_move
     progress_game
-    ai_turn
+    #ai_turn
     render_board
 
+    #if next_player is human
     erb '/board'.to_sym
+    #if next player is ai
+    #erb 'auto_refresh_board'.to_sym
+  end
+
+  get '/ai_move' do
+    #...some stuff that needs to get done
+    #
+    #if next_player is human
+    erb '/board'.to_sym
+    #if next player is ai
+    #erb 'auto_refresh_board'.to_sym
   end
 
   get '/winner' do

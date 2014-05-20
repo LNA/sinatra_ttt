@@ -1,6 +1,9 @@
 class Game
+  # injuect board, game_rules and anything else I call session on here.
+  # #use session[:game].ai
+  # session[:game].board.fill() etc
   attr_accessor :current_player_piece, :current_player_type,
-                :next_player, 
+                :next_player,
                 :player_one, :player_two,
                 :player_one_piece, :player_two_piece,
                 :player_one_type, :player_two_type
