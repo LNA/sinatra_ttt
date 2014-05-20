@@ -31,14 +31,18 @@ class App < Sinatra::Application
     create_current_player
     create_ai_if_needed
 
-    redirect to('/play')
+    redirect to('/test_board.js')
+  end
+
+  get '/test_board.js' do
+    erb '/test_board.js'.to_sym
   end
 
   get '/play' do
     ai_loop if neither_players_are_human? # need to see board
     ai_turn if either_player_is_the_ai?
     render_board
-    erb '/board'.to_sym
+    '/test_board.js'.to_sym
   end
 
   post '/move' do #web game interactor

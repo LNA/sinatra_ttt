@@ -1,10 +1,8 @@
 $(function() {
-  if ( i'm the board) {
-    setTimeout(updateBoard, 1000);
-  }
+  setTimeout(updateBoard, 1000);
  });
 
 function updateBoard () {
-  $.getScript("/board".js);
+  $.getScript("/test_board.js");
   setTimeout(updateBoard, 1000);
 }
