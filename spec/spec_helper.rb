@@ -1,8 +1,9 @@
 $: << File.expand_path(File.dirname(__FILE__)) + '/../'
 $: << File.expand_path(File.dirname(__FILE__)) + '/../lib/'
 
-require 'rack/test'
 require 'app'
+require 'rack/test'
+require 'web_game_store'
 
 def app
   Sinatra::Application

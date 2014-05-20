@@ -15,4 +15,11 @@ describe App do
       expect(last_response.body).to include("Start")
     end
   end
+
+  context 'new game' do 
+    it 'creates a new game' do 
+      session = {}
+      post '/new_game', {'rack.session' =>  { 'foo' => 'blah' } }
+    end
+  end
 end

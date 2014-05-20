@@ -4,6 +4,7 @@ gem 'sinatra'
 gem 'rack'
 gem 'thin'
 gem 'rack-test'
+gem 'jquery-rails'
 
 gem 'rspec'
 gem 'pry'

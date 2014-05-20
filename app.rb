@@ -26,7 +26,7 @@ class App < Sinatra::Application
 
   post '/new_game' do
     create_game # Game interactor class GameInteractor.setup_new_game
-    create_game_rules 
+    create_game_rules
     create_board
     create_current_player
     create_ai_if_needed
@@ -35,15 +35,14 @@ class App < Sinatra::Application
   end
 
   get '/play' do
-    ai_loop if neither_players_are_human?
-    ai_turn if either_player_is_the_ai? 
+    ai_loop if neither_players_are_human? # need to see board
+    ai_turn if either_player_is_the_ai?
     render_board
-    
     erb '/board'.to_sym
   end
 
   post '/move' do #web game interactor
-    make_human_move 
+    make_human_move
     progress_game
     ai_turn
     render_board
@@ -62,8 +61,6 @@ class App < Sinatra::Application
     redirect '/'
   end
 
-private 
-
   def create_game
     session[:game] = WebGameStore.new_game(params)
   end
@@ -73,7 +70,7 @@ private
   end
 
   def create_board
-    session[:board] = WebGameStore.board 
+    session[:board] = WebGameStore.board
   end
 
   def create_current_player
@@ -128,7 +125,7 @@ private
   end
 
   def make_human_move
-    session[:board].fill(fetch_square.to_i, session[:game].current_player_piece) 
+    session[:board].fill(fetch_square.to_i, session[:game].current_player_piece)
   end
 
   def fetch_square
