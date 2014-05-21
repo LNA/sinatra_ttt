@@ -8,12 +8,12 @@
   </div>
   <body>
     <div class="player_one">
-      <p> Player 1: </p> <%= session[:game].player_one_type %>
-      <%= session[:game].player_one_piece %>
+      <p> Player 1: </p> <%= session[:game].settings.player_one_type %>
+      <%= session[:game].settings.player_one_piece %>
     </div>
     <div class="player_two">
-      <p> Player 2: </p> <%= session[:game].player_two_type %>
-      <%= session[:game].player_two_piece %>
+      <p> Player 2: </p> <%= session[:game].settings.player_two_type %>
+      <%= session[:game].settings.player_two_piece %>
     </div>
     <form method="post" action="/move">
       <ul class="board clearfix">

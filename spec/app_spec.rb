@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe App do
-  let (:app) {App.new}
+  let (:app)   {App.new}
 
   context 'the home page' do
     it 'loads the home page' do
@@ -24,9 +24,13 @@ describe App do
   end
 
   context '#post_move' do
-    let(:valid_move_params) { square: 1 }
+    #let(:valid_move_params) { "square" => "1" }
 
-    xit 'updates the board with move passed in' do
+    it 'updates the board with move passed in' do
+      board = Board.new
+      {'rack.session' => {}}
+      post '/move', { "square" => "1" }
+      board.spaces[1].should == "X"
     end
 
     xit 'checks for winner after a move is placed' do
