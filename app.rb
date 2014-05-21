@@ -40,7 +40,7 @@ class App < Sinatra::Application
   post '/move' do 
     make_human_move
     progress_game
-    #ai_turn
+    redirect to ('/ai_move') if session[:game].settings.current_player_type == "AI"
     render_board
     #if next_player is human
     erb '/board'.to_sym
@@ -49,6 +49,8 @@ class App < Sinatra::Application
   end
 
   get '/ai_move' do
+    render_board
+    ai_turn
     #...some stuff that needs to get done
     #
     #if next_player is human
@@ -90,8 +92,8 @@ class App < Sinatra::Application
   end
 
   def make_ai_move
-    best_move = session[:game].ai.find_best_move(session[:game].board, session[:game].settings..current_player_piece, session[:game].settings.next_player_piece)
-    session[:game].settings.board.fill(best_move, session[:game].settings.current_player_piece)
+    best_move = session[:game].ai.find_best_move(session[:game].board, session[:game].settings.current_player_piece, session[:game].settings.next_player_piece)
+    session[:game].board.fill(best_move, session[:game].settings.current_player_piece)
   end
 
   def either_player_is_the_ai?

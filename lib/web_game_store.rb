@@ -1,5 +1,6 @@
 require 'game'
 require 'settings'
+require 'game_rules'
 class WebGameStore
   @@games = []
 
@@ -19,31 +20,15 @@ class WebGameStore
     @game_rules = GameRules.new
   end
 
-  def self.current_game_rules
-    @game_rules
-  end
-
   def self.board
     @board = Board.new
   end
 
   def self.ai
-    @ai = AI.new(@game_rules)
-  end
-
-  def self.new_game(params = {})
-    @game = Game.new(params)
+    @ai = AI.new(GameRules.new)
   end
 
   def self.settings(params = {})
     @settings = Settings.new(params)
   end
-
-  # def self.current_game
-  #   @game
-  # end
-
-  # def self.new_game
-  #   @game = Game.new(@ai, @board, @game_rules, @settings)
-  # end
 end

@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe App do
-  let (:app)   {App.new}
+  let (:app)      {App.new}
+  let (:session)  {MockSession.new()}
 
   context 'the home page' do
     it 'loads the home page' do
