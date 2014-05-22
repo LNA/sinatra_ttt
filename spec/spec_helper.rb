@@ -10,6 +10,8 @@ require 'mock_game_rules'
 require 'mock_settings'
 require 'mock_ui'
 
+require 'pry'
+
 def app
   App
 end

@@ -134,6 +134,8 @@ class App < Sinatra::Application
   end
 
   def check_for_winner
-    redirect '/winner' if game.game_rules.game_over?(game.board.spaces)
+    if game.game_rules.game_over?(game.board.spaces) == true
+      redirect '/winner' 
+    end
   end
 end

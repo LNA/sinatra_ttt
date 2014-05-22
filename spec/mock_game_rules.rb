@@ -12,7 +12,7 @@ class MockGameRules
   end
 
   def game_over?(mock_board)
-    @checked_for_game_over = true
+    @checked_for_game_over = mock_board
   end
 
   def winner(mock_board)
