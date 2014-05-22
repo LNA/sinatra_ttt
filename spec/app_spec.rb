@@ -1,8 +1,14 @@
 require 'spec_helper'
 
 describe App do
-  let (:app)      {App.new}
-  let (:session)  {MockSession.new()}
+  let (:mock_ai)         { MockAI.new}
+  let (:mock_board)      { MockBoard.new }
+  let (:mock_game_rules) { MockGameRules.new }
+  let (:mock_settings)   { MockSettings.new  }
+
+  before :each do 
+    @mock_game = Game.new(mock_ai, mock_board, mock_game_rules, mock_settings)
+  end
 
   context 'the home page' do
     it 'loads the home page' do
@@ -19,25 +25,32 @@ describe App do
 
   context 'new game' do
     it 'creates a new game' do
-      session = {}
       post '/new_game', {'rack.session' =>  { 'foo' => 'blah' } }
     end
   end
 
   context '#post_move' do
-    #let(:valid_move_params) { "square" => "1" }
-
     it 'updates the board with move passed in' do
-      board = Board.new
-      {'rack.session' => {}}
-      post '/move', { "square" => "1" }
-      board.spaces[1].should == "X"
+      App.any_instance.should_receive(:game)
+        .any_number_of_times.and_return(@mock_game)
+
+      @mock_game.settings.current_player_piece = 'X'
+      post '/move', params = {"square" => "1"}
+
+      @mock_game.board.filled_space.should == 1 
+      @mock_game.board.played_piece.should == 'X'
     end
 
-    xit 'checks for winner after a move is placed' do
+    it 'checks for winner after a move is placed' do
+      App.any_instance.should_receive(:game)
+        .any_number_of_times.and_return(@mock_game)
+
+      @mock_game.settings.current_player_piece = 'X'
+      post '/move', params = {"square" => "1"}
+      @mock_game.game_rules.checked_for_game_over.should == true
     end
 
-    xit 'advances the next player' do
+    it 'advances the next player' do
     end
 
     xit 'advances the next player type' do

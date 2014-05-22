@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+  <div class="container">
+    <head>
+      <link href="css/application.css" rel="stylesheet" type="text/css">
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <meta http-equiv="refresh" content="3;url=http://www.google.com/" />
+    </head>
+  </div>
+  <body>
+    <div class="player_one">
+      <p> Player 1: </p> <%= session[:game].settings.player_one_type %>
+      <%= session[:game].settings.player_one_piece %>
+    </div>
+    <div class="player_two">
+      <p> Player 2: </p> <%= session[:game].settings.player_two_type %>
+      <%= session[:game].settings.player_two_piece %>
+    </div>
+    <form method="post" action="/move">
+      <ul class="board clearfix">
+        <% @board.each_with_index do |square_value, index| %>
+          <li id="<%= index %>" class="square">
+            <% if square_value.nil? %>
+              <input type="submit" name="square" value="<%= index %>">
+            <% else %>
+              <%= square_value %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </form>
+  </body>
+</html>

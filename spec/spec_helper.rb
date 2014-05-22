@@ -4,10 +4,14 @@ $: << File.expand_path(File.dirname(__FILE__)) + '/../lib/'
 require 'app'
 require 'rack/test'
 require 'web_game_store'
-require 'mock_session'
+require 'mock_ai'
+require 'mock_board'
+require 'mock_game_rules'
+require 'mock_settings'
+require 'mock_ui'
 
 def app
-  Sinatra::Application
+  App
 end
 
 RSpec.configure do |config|

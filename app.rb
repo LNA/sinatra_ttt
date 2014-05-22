@@ -25,25 +25,28 @@ class App < Sinatra::Application
   end
 
   post '/new_game' do
-    create_game
+    create_game 
 
     redirect to('/play')
   end
 
   get '/play' do
-    ai_loop if neither_players_are_human? # need to see board
+    ai_loop if neither_players_are_human? 
     ai_turn if either_player_is_the_ai?
     render_board
     erb '/board'.to_sym
   end
 
   post '/move' do 
+    process_human_move
+  end
+
+  def process_human_move
     make_human_move
     progress_game
-    redirect to ('/ai_move') if session[:game].settings.current_player_type == "AI"
-    render_board
-    #if next_player is human
-    erb '/board'.to_sym
+    redirect to ('/ai_move') if game.settings.current_player_type == "AI" # render_next_board
+    render_board 
+    erb '/board'.to_sym if next_player_type == "Human" 
     #if next player is ai
     #erb 'auto_refresh_board'.to_sym
   end
@@ -70,34 +73,38 @@ class App < Sinatra::Application
     redirect '/'
   end
 
+  def game
+    session[:game]
+  end
+
   def create_game
     session[:game] = Game.new(WebGameStore.ai,         WebGameStore.board, 
                               WebGameStore.game_rules, WebGameStore.settings(params))
   end
 
   def ai_loop
-    until session[:game].game_rules.game_over?(session[:board].spaces)
+    until game.game_rules.game_over?(session[:board].spaces)
       ai_turn
       render_board
     end
   end
 
   def neither_players_are_human?
-    session[:game].settings.player_one_type == "AI" && session[:game].settings.player_two_type == "AI"
+    game.settings.player_one_type == "AI" && game.settings.player_two_type == "AI"
   end
 
   def ai_turn
-    make_ai_move  if session[:game].settings.current_player_type == "AI"
-    progress_game if session[:game].settings.current_player_type == "AI"
+    make_ai_move  if game.settings.current_player_type == "AI"
+    progress_game if game.settings.current_player_type == "AI"
   end
 
   def make_ai_move
-    best_move = session[:game].ai.find_best_move(session[:game].board, session[:game].settings.current_player_piece, session[:game].settings.next_player_piece)
-    session[:game].board.fill(best_move, session[:game].settings.current_player_piece)
+    best_move = game.ai.find_best_move(game.board, game.settings.current_player_piece, game.settings.next_player_piece)
+    game.board.fill(best_move, game.settings.current_player_piece)
   end
 
   def either_player_is_the_ai?
-    session[:game].settings.player_one_type == "AI" || session[:game].settings.player_two_type == "AI"
+    game.settings.player_one_type == "AI" || game.settings.player_two_type == "AI"
   end
 
   def progress_game
@@ -107,19 +114,19 @@ class App < Sinatra::Application
   end
 
   def next_player
-    session[:game].settings.current_player_piece = session[:game].settings.next_player_piece
+    game.settings.current_player_piece = game.settings.next_player_piece
   end
 
   def next_player_type
-    session[:game].settings.current_player_type = session[:game].settings.next_player_type
+    game.settings.current_player_type = game.settings.next_player_type
   end
 
   def render_board
-    @board = session[:game].board.spaces
+    @board = game.board.spaces
   end
 
   def make_human_move
-    session[:game].board.fill(fetch_square.to_i, session[:game].settings.current_player_piece)
+    game.board.fill(fetch_square.to_i, game.settings.current_player_piece)
   end
 
   def fetch_square
@@ -127,6 +134,6 @@ class App < Sinatra::Application
   end
 
   def check_for_winner
-    redirect '/winner' if session[:game].game_rules.game_over?(session[:game].board.spaces)
+    redirect '/winner' if game.game_rules.game_over?(game.board.spaces)
   end
 end
