@@ -8,8 +8,8 @@ describe App do
 
   before :each do 
     @mock_game = Game.new(mock_ai, mock_board, mock_game_rules, mock_settings)
-    # App.any_instance.should_receive(:game)
-    #     .any_number_of_times.and_return(@mock_game)
+    App.any_instance.should_receive(:game)
+        .any_number_of_times.and_return(@mock_game)
   end
 
   context 'the home page' do
@@ -33,8 +33,8 @@ describe App do
 
   context '#post_move' do
     it 'updates the board with move passed in' do
-      App.any_instance.should_receive(:game)
-        .any_number_of_times.and_return(@mock_game)
+      # App.any_instance.should_receive(:game)
+      #   .any_number_of_times.and_return(@mock_game)
 
       @mock_game.settings.current_player_piece = 'X'
       post '/move', params = {"square" => "1"}
@@ -44,18 +44,18 @@ describe App do
     end
 
     it 'checks for winner after a move is placed' do
-      App.any_instance.should_receive(:game)
-        .any_number_of_times.and_return(@mock_game)
+      # App.any_instance.should_receive(:game)
+      #   .any_number_of_times.and_return(@mock_game)
 
       @mock_game.settings.current_player_piece = 'X'
       post '/move', params = {"square" => "1"}
 
-      @mock_game.game_rules.checked_for_game_over.should == true
+      @mock_game.game_rules.checked_for_game_over.should == "it got here"
     end
 
     it 'advances the next players game piece' do
-      App.any_instance.should_receive(:game)
-        .any_number_of_times.and_return(@mock_game)
+      # App.any_instance.should_receive(:game)
+      #   .any_number_of_times.and_return(@mock_game)
 
       @mock_game.settings.current_player_piece = 'X'
       post '/move', params = {"square" => "1"}
