@@ -11,7 +11,6 @@ describe App do
     App.any_instance.should_receive(:game)
         .any_number_of_times.and_return(@mock_game)
     @mock_game.settings.current_player_piece = 'X'
-    post '/move', params = {"square" => "1"}
   end
 
   context 'the home page' do
@@ -35,6 +34,10 @@ describe App do
   end
 
   context '#post_move' do
+    before :each do 
+      post '/move', params = {"square" => "1"}
+    end
+
     it 'updates the board with move passed in' do
       @mock_game.board.filled_space.should == 1 
       @mock_game.board.played_piece.should == 'X'
@@ -54,11 +57,24 @@ describe App do
   end
 
   context '#ai_move' do
-    it 'retrieves best move from the AI' do
-
+    before :each do 
+      get '/ai_move', params = {"square" => "1"}
     end
 
-    xit 'updates the board with move passed in' do
+    it 'renders the board' do 
+      @mock_game.board.spaces.should == true
+    end
+
+    it 'checks the current player type in mock settings' do 
+      @mock_game.settings.checked_current_player_type.should == "AI"
+    end
+
+    it 'retrieves best move from the AI' do
+      @mock_game.ai.found_best_move.should == true
+    end
+
+    it 'updates the board with move passed in' do
+      @mock_game.board.played_piece.should == 'X'
     end
 
     xit 'checks for winner after a move is placed' do
