@@ -10,6 +10,8 @@ describe App do
     @mock_game = Game.new(mock_ai, mock_board, mock_game_rules, mock_settings)
     App.any_instance.should_receive(:game)
         .any_number_of_times.and_return(@mock_game)
+    @mock_game.settings.current_player_piece = 'X'
+    post '/move', params = {"square" => "1"}
   end
 
   context 'the home page' do
@@ -21,6 +23,7 @@ describe App do
 
     it "displays the content of the hompage" do
       get '/'
+
       expect(last_response.body).to include("Start")
     end
   end
@@ -33,37 +36,20 @@ describe App do
 
   context '#post_move' do
     it 'updates the board with move passed in' do
-      # App.any_instance.should_receive(:game)
-      #   .any_number_of_times.and_return(@mock_game)
-
-      @mock_game.settings.current_player_piece = 'X'
-      post '/move', params = {"square" => "1"}
-
       @mock_game.board.filled_space.should == 1 
       @mock_game.board.played_piece.should == 'X'
     end
 
     it 'checks for winner after a move is placed' do
-      # App.any_instance.should_receive(:game)
-      #   .any_number_of_times.and_return(@mock_game)
-
-      @mock_game.settings.current_player_piece = 'X'
-      post '/move', params = {"square" => "1"}
-
       @mock_game.game_rules.checked_for_game_over.should == "it got here"
     end
 
     it 'advances the next players game piece' do
-      # App.any_instance.should_receive(:game)
-      #   .any_number_of_times.and_return(@mock_game)
-
-      @mock_game.settings.current_player_piece = 'X'
-      post '/move', params = {"square" => "1"}
-
-      @mock_game.settings.triggered_next_player.should == true
+      @mock_game.settings.triggered_next_player_mark.should == true
     end
 
-    xit 'advances the next player type' do
+    it 'advances the next player type' do
+      @mock_game.settings.triggered_next_player_type.should == true
     end
   end
 
@@ -98,7 +84,7 @@ describe App do
   end
 
   context 'next player is AI' do
-    it 'renders the board with move buttons disabled after human move' do
+    xit 'renders the board with move buttons disabled after human move' do
       post '/move', 'rack.session' => {:square => 1,
                                        :game => {:next_player_type => "Human"}}
 
