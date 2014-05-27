@@ -100,7 +100,7 @@ describe App do
       post '/move', 'rack.session' => {:square => 1,
                                        :game => {:next_player_type => "Human"}}
 
-      expect(last_response.body).to_not include("submit")
+      expect(last_response.body).to include("submit")
     end
   end
 
