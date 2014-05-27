@@ -20,11 +20,7 @@
       <ul class="board clearfix">
         <% @board.each_with_index do |square_value, index| %>
           <li id="<%= index %>" class="square">
-            <% if square_value.nil? %>
-              <input type="submit" name="square" value="<%= index %>">
-            <% else %>
-              <%= square_value %>
-            <% end %>
+            <%= square_value %>
           </li>
         <% end %>
       </ul>
