@@ -107,9 +107,10 @@ describe App do
   end
 
   context 'next player is AI' do
-    xit 'renders the board with move buttons disabled after human move' do
+    it 'renders the board with move buttons disabled after human move' do
       post '/move', 'rack.session' => {:square => 1,
                                        :game => {:next_player_type => "AI"}}
+      binding.pry
 
       expect(last_response.body).to_not include("submit")
     end

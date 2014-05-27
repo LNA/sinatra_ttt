@@ -4,7 +4,7 @@
     <head>
       <link href="css/application.css" rel="stylesheet" type="text/css">
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-      <meta http-equiv="refresh" content="3;url=http://localhost:9292/ai_move" />
+      <meta http-equiv="refresh" content="1;url=http://localhost:9292/ai_move" />
     </head>
   </div>
   <body>
@@ -16,7 +16,7 @@
       <p> Player 2: </p> <%= session[:game].settings.player_two_type %>
       <%= session[:game].settings.player_two_piece %>
     </div>
-    <form method="post" action="/move">
+    <form method="get" action="/ai_move">
       <ul class="board clearfix">
         <% @board.each_with_index do |square_value, index| %>
           <li id="<%= index %>" class="square">

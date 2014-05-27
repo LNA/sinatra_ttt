@@ -44,7 +44,8 @@ class App < Sinatra::Application
   get '/ai_move' do
     set_board
     ai_turn
-    process_redirect
+    redirect to ('/play') if game.settings.current_player_type == "Human"
+    erb '/auto_refresh_board'.to_sym
   end
 
   get '/winner' do
