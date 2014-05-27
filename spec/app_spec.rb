@@ -77,32 +77,37 @@ describe App do
       @mock_game.board.played_piece.should == 'X'
     end
 
-    xit 'checks for winner after a move is placed' do
+    it 'checks for winner after a move is placed' do
+      @mock_game.game_rules.checked_for_game_over.should == "it got here"
     end
 
-    xit 'advances the next player' do
+    it 'advances the next player' do
+      @mock_game.settings.triggered_next_player_mark.should == true
     end
 
-    xit 'advances the next player type' do
+    it 'advances the next player type' do
+      @mock_game.settings.triggered_next_player_type.should == true
     end
   end
 
   context 'next player is human' do
     it 'renders the board with move buttons enabled after human move' do
-      post '/move', 'rack.session' => {:square => 1,
-                                       :game => {:next_player_type => "Human"}}
+      post '/move', params = {"square" => "1"}
       expect(last_response.body).to include("submit")
     end
 
-    xit 'renders the board with move buttons enabled after ai move' do
+    it 'renders the board with move buttons enabled after ai move' do
+      post '/move', 'rack.session' => {:square => 1,
+                                       :game => {:next_player_type => "Human"}}
 
+      expect(last_response.body).to_not include("submit")
     end
   end
 
   context 'next player is AI' do
     xit 'renders the board with move buttons disabled after human move' do
       post '/move', 'rack.session' => {:square => 1,
-                                       :game => {:next_player_type => "Human"}}
+                                       :game => {:next_player_type => "AI"}}
 
       expect(last_response.body).to_not include("submit")
     end
