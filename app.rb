@@ -30,19 +30,19 @@ class App < Sinatra::Application
   end
 
   get '/play' do
-    render_board
+    set_board
     redirect to ('/ai_move') if game.settings.current_player_type == "AI"
       
     erb '/board'.to_sym
   end
 
   post '/move' do 
-    render_board
+    set_board
     process_human_move
   end
 
   get '/ai_move' do
-    render_board
+    set_board
     ai_turn
     process_redirect
   end
@@ -58,6 +58,7 @@ class App < Sinatra::Application
     redirect '/'
   end
 
+# private
   def process_human_move
     make_human_move
     progress_game
@@ -83,7 +84,7 @@ class App < Sinatra::Application
   def ai_loop
     until game.game_rules.game_over?(session[:board].spaces)
       ai_turn
-      render_board
+      set_board
     end
   end
 
@@ -119,7 +120,7 @@ class App < Sinatra::Application
     game.settings.current_player_type = game.settings.next_player_type
   end
 
-  def render_board
+  def set_board
     @board = game.board.spaces
   end
 
