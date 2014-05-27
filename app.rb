@@ -31,9 +31,8 @@ class App < Sinatra::Application
 
   get '/play' do
     render_board
-     if game.settings.current_player_type == "AI"
-      redirect to ('/ai_move') 
-    end
+    redirect to ('/ai_move') if game.settings.current_player_type == "AI"
+      
     erb '/board'.to_sym
   end
 
