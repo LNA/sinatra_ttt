@@ -35,6 +35,8 @@ describe App do
 
   context '#post_move' do
     before :each do 
+      @mock_game.game_rules.game_over_values = [false]
+
       post '/move', params = {"square" => "1"}
     end
 
@@ -44,7 +46,7 @@ describe App do
     end
 
     it 'checks for winner after a move is placed' do
-      @mock_game.game_rules.checked_for_game_over.should == "it got here"
+      @mock_game.game_rules.checked_for_game_over.should == false
     end
 
     it 'advances the next players game piece' do
@@ -78,7 +80,7 @@ describe App do
     end
 
     it 'checks for winner after a move is placed' do
-      @mock_game.game_rules.checked_for_game_over.should == "it got here"
+      @mock_game.game_rules.checked_for_game_over.should == false
     end
 
     it 'advances the next player' do
