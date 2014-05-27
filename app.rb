@@ -67,17 +67,17 @@ class App < Sinatra::Application
   def process_human_move
     make_human_move
     progress_game
-    if game.settings.current_player_type == "AI" 
-      redirect to ('/ai_move')
-    end
-    if next_player_type == "Human" 
-      erb '/board'.to_sym 
-    end
-    if next_player_type == "AI" 
-      erb 'auto_refresh_board'.to_sym
-    end
+    process_redirect
+  end
+
+  def process_redirect
+    redirect to ('/ai_move')        if game.settings.current_player_type == "AI" 
+    erb '/board'.to_sym             if next_player_type == "Human" 
+    erb 'auto_refresh_board'.to_sym if next_player_type == "AI" 
     erb '/board'.to_sym
   end
+
+  def 
 
   def game
     session[:game]
@@ -140,8 +140,6 @@ class App < Sinatra::Application
   end
 
   def check_for_winner
-    if game.game_rules.game_over?(game.board.spaces)
-      redirect '/winner' 
-    end
+    redirect '/winner' if game.game_rules.game_over?(game.board.spaces)
   end
 end
