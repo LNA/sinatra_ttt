@@ -71,13 +71,11 @@ class App < Sinatra::Application
   end
 
   def process_redirect
-    redirect to ('/ai_move')        if game.settings.current_player_type == "AI" 
-    erb '/board'.to_sym             if next_player_type == "Human" 
+    redirect to ('/ai_move') if game.settings.current_player_type == "AI" 
+    erb '/board'.to_sym  if next_player_type == "Human" 
     erb 'auto_refresh_board'.to_sym if next_player_type == "AI" 
     erb '/board'.to_sym
   end
-
-  def 
 
   def game
     session[:game]
