@@ -6,7 +6,7 @@ describe App do
   let (:mock_game_rules) { MockGameRules.new }
   let (:mock_settings)   { MockSettings.new  }
 
-  before :each do 
+  before :each do
     @mock_game = Game.new(mock_ai, mock_board, mock_game_rules, mock_settings)
     App.any_instance.should_receive(:game)
         .any_number_of_times.and_return(@mock_game)
@@ -34,14 +34,14 @@ describe App do
   end
 
   context '#post_move' do
-    before :each do 
+    before :each do
       @mock_game.game_rules.game_over_values = [false]
 
       post '/move', params = {"square" => "1"}
     end
 
     it 'updates the board with move passed in' do
-      @mock_game.board.filled_space.should == 1 
+      @mock_game.board.filled_space.should == 1
       @mock_game.board.played_piece.should == 'X'
     end
 
@@ -59,15 +59,15 @@ describe App do
   end
 
   context '#ai_move' do
-    before :each do 
+    before :each do
       get '/ai_move', params = {"square" => "1"}
     end
 
-    it 'renders the board' do 
+    it 'renders the board' do
       @mock_game.board.spaces.should == true
     end
 
-    it 'checks the current player type in mock settings' do 
+    it 'checks the current player type in mock settings' do
       @mock_game.settings.checked_current_player_type.should == "AI"
     end
 
@@ -110,8 +110,6 @@ describe App do
     it 'renders the board with move buttons disabled after human move' do
       post '/move', 'rack.session' => {:square => 1,
                                        :game => {:next_player_type => "AI"}}
-      binding.pry
-
       expect(last_response.body).to_not include("submit")
     end
 
