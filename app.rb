@@ -49,6 +49,19 @@ class App < Sinatra::Application
   end
 
 # private
+
+  def create_game
+    session[:game] = Game.new(WebGameStore.ai,         WebGameStore.board,
+                              WebGameStore.game_rules, WebGameStore.settings(params))
+    redirect to('/play')
+  end
+
+  def process_board_for_new_game
+    set_board
+    redirect to ('/ai_move') if current_player_type == "AI"
+    erb '/board'.to_sym 
+  end
+
   def process_human_move
     set_board
     make_human_move
@@ -70,12 +83,6 @@ class App < Sinatra::Application
     erb '/board'.to_sym if next_player_type == "Human"
   end
 
-  def process_board_for_new_game
-    set_board
-    redirect to ('/ai_move') if current_player_type == "AI"
-    erb '/board'.to_sym 
-  end
-
   def process_replay
     session.clear
     erb '/welcome'.to_sym
@@ -84,12 +91,6 @@ class App < Sinatra::Application
 
   def game
     session[:game]
-  end
-
-  def create_game
-    session[:game] = Game.new(WebGameStore.ai,         WebGameStore.board,
-                              WebGameStore.game_rules, WebGameStore.settings(params))
-    redirect to('/play')
   end
 
   def ai_loop
