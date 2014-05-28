@@ -68,7 +68,7 @@ class App < Sinatra::Application
   end
 
   def process_redirect
-    redirect to ('/ai_move') if game.settings.current_player_type == "AI"
+    redirect to ('/ai_move') if current_player_type == "AI"
     erb '/auto_refresh_board'.to_sym if next_player_type == "AI"
     erb '/board'.to_sym if next_player_type == "Human"
   end
@@ -94,8 +94,8 @@ class App < Sinatra::Application
   end
 
   def ai_turn
-    make_ai_move  if game.settings.current_player_type == "AI"
-    progress_game if game.settings.current_player_type == "AI"
+    make_ai_move  if current_player_type == "AI"
+    progress_game if current_player_type == "AI"
   end
 
   def make_ai_move
