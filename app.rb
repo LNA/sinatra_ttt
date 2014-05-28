@@ -26,7 +26,6 @@ class App < Sinatra::Application
 
   post '/new_game' do
     create_game
-    redirect to('/play')
   end
 
   get '/play' do
@@ -83,6 +82,7 @@ class App < Sinatra::Application
   def create_game
     session[:game] = Game.new(WebGameStore.ai,         WebGameStore.board,
                               WebGameStore.game_rules, WebGameStore.settings(params))
+    redirect to('/play')
   end
 
   def ai_loop
