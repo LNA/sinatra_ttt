@@ -36,7 +36,6 @@ class App < Sinatra::Application
   end
 
   post '/move' do
-    set_board
     process_human_move
   end
 
@@ -57,6 +56,7 @@ class App < Sinatra::Application
 
 # private
   def process_human_move
+    set_board
     make_human_move
     progress_game
     process_redirect
