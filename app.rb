@@ -45,10 +45,7 @@ class App < Sinatra::Application
   end
 
   get '/play_again' do
-    session.clear
-    erb '/welcome'.to_sym
-
-    redirect '/'
+    process_replay
   end
 
 # private
@@ -77,6 +74,12 @@ class App < Sinatra::Application
     set_board
     redirect to ('/ai_move') if current_player_type == "AI"
     erb '/board'.to_sym 
+  end
+
+  def process_replay
+    session.clear
+    erb '/welcome'.to_sym
+    redirect '/'
   end
 
   def game
