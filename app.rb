@@ -49,7 +49,6 @@ class App < Sinatra::Application
   end
 
 # private
-
   def create_game
     session[:game] = Game.new(WebGameStore.ai,         WebGameStore.board,
                               WebGameStore.game_rules, WebGameStore.settings(params))
@@ -75,13 +74,12 @@ class App < Sinatra::Application
   def process_ai_move
     set_board
     ai_turn
-    redirect to ('/play') if current_player_type == "Human"
-    erb '/auto_refresh_board'.to_sym
+    next_board_after_ai_move
   end
 
   def process_redirect
     redirect to ('/ai_move') if current_player_type == "AI"
-    erb '/auto_refresh_board'.to_sym if next_player_type == "AI"
+    erb '/auto_refresh_board'.to_sym if current_player_type == "AI"
     erb '/board'.to_sym if next_player_type == "Human"
   end
 
@@ -89,6 +87,18 @@ class App < Sinatra::Application
     session.clear
     erb '/welcome'.to_sym
     redirect '/'
+  end
+
+  def next_board_after_ai_move
+    if current_player_type == "Human"
+      redirect to ('/play') 
+    else
+      render_auto_refresh_board      
+    end
+  end
+
+  def render_auto_refresh_board
+    erb '/auto_refresh_board'.to_sym
   end
 
   def game

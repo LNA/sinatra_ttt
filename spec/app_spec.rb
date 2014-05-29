@@ -8,8 +8,7 @@ describe App do
 
   before :each do
     @mock_game = Game.new(mock_ai, mock_board, mock_game_rules, mock_settings)
-    App.any_instance.should_receive(:game)
-        .any_number_of_times.and_return(@mock_game)
+    App.any_instance.stub(:game).and_return(@mock_game)
     @mock_game.settings.current_player_piece = 'X'
   end
 
@@ -107,14 +106,11 @@ describe App do
   end
 
   context 'next player is AI' do
-    it 'renders the board with move buttons disabled after human move' do
-      post '/move', 'rack.session' => {:square => 1,
-                                       :game => {:next_player_type => "AI"}}
-      expect(last_response.body).to_not include("submit")
-    end
+    it 'renders the auto refresh board for AI move for AI versus AI game' do
+      @mock_game.settings.next_player_type_value = "AI"
+      App.any_instance.should_receive(:render_auto_refresh_board)
 
-    xit 'renders the board with move buttons disbaled after AI move' do
-
+      get '/ai_move'
     end
   end
 end
