@@ -76,6 +76,7 @@ class App < Sinatra::Application
     set_board
     ai_turn
     redirect to ('/play') if current_player_type == "Human"
+    erb '/auto_refresh_board'.to_sym
   end
 
   def process_redirect
