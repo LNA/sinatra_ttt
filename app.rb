@@ -8,6 +8,7 @@ require 'game_rules'
 require 'game'
 require 'web_game_settings'
 require 'web_game_store'
+require 'pry'
 
 configure do
   enable :sessions
@@ -122,8 +123,8 @@ class App < Sinatra::Application
   end
 
   def make_ai_move
-    best_move = game.ai.find_best_move(game.board, game.settings.current_player_piece, game.settings.next_player_piece)
-    game.board.fill(best_move, game.settings.current_player_piece)
+    best_move = game.ai.find_best_move(game.board.spaces, game.settings.current_player_mark, game.settings.next_player_mark)
+    game.board.spaces[best_move] = game.settings.current_player_mark
   end
 
   def either_player_is_the_ai?
@@ -137,7 +138,7 @@ class App < Sinatra::Application
   end
 
   def next_player
-    game.settings.current_player_piece = game.settings.next_player_piece
+    game.settings.current_player_mark = game.settings.next_player_mark
   end
 
   def next_player_type
@@ -153,7 +154,7 @@ class App < Sinatra::Application
   end
 
   def make_human_move
-    game.board.fill(fetch_square.to_i, game.settings.current_player_piece)
+    game.board.spaces[fetch_square.to_i] = game.settings.current_player_mark
   end
 
   def fetch_square
